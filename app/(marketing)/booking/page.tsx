@@ -47,13 +47,28 @@ function BookingForm() {
     if (preselectedService) {
       setValue("service", preselectedService)
     }
-  }, [preselectedService, setValue])
+    if (searchParams.get("success") === "true") {
+      setIsSubmitted(true)
+    }
+  }, [preselectedService, searchParams, setValue])
 
   const onSubmit = async (data: BookingFormValues) => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    console.log("Booking data:", data)
-    setIsSubmitted(true)
+    try {
+      const resp = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const result = await resp.json();
+      if (result.success && result.paymentLink) {
+        window.location.href = result.paymentLink;
+      } else {
+        setIsSubmitted(true);
+      }
+    } catch (e) {
+      console.error(e);
+      setIsSubmitted(true);
+    }
   }
 
   if (isSubmitted) {
@@ -66,9 +81,9 @@ function BookingForm() {
         <p className="mt-4 max-w-md text-lg text-slate-600">
           Thank you for choosing PurrfectSpa. We&apos;ll contact you shortly to confirm your appointment time.
         </p>
-        <Button 
-          className="mt-8 rounded-full" 
-          onClick={() => setIsSubmitted(false)}
+        <Button
+          className="mt-8 rounded-full"
+          onClick={() => window.location.href = "/booking"}
         >
           Book Another Session
         </Button>
@@ -86,21 +101,21 @@ function BookingForm() {
         <div className="grid gap-6 md:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="ownerName">Full Name</Label>
-            <Input 
-              id="ownerName" 
-              placeholder="Jane Doe" 
-              {...register("ownerName")} 
+            <Input
+              id="ownerName"
+              placeholder="Jane Doe"
+              {...register("ownerName")}
               className={errors.ownerName ? "border-red-500 focus-visible:ring-red-500" : ""}
             />
             {errors.ownerName && <p className="text-sm text-red-500">{errors.ownerName.message}</p>}
           </div>
           <div className="space-y-2">
             <Label htmlFor="phone">Phone Number</Label>
-            <Input 
-              id="phone" 
-              type="tel" 
-              placeholder="(555) 123-4567" 
-              {...register("phone")} 
+            <Input
+              id="phone"
+              type="tel"
+              placeholder="(555) 123-4567"
+              {...register("phone")}
               className={errors.phone ? "border-red-500 focus-visible:ring-red-500" : ""}
             />
             {errors.phone && <p className="text-sm text-red-500">{errors.phone.message}</p>}
@@ -116,20 +131,20 @@ function BookingForm() {
         <div className="grid gap-6 md:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="catName">Cat&apos;s Name</Label>
-            <Input 
-              id="catName" 
-              placeholder="Luna" 
-              {...register("catName")} 
+            <Input
+              id="catName"
+              placeholder="Luna"
+              {...register("catName")}
               className={errors.catName ? "border-red-500 focus-visible:ring-red-500" : ""}
             />
             {errors.catName && <p className="text-sm text-red-500">{errors.catName.message}</p>}
           </div>
           <div className="space-y-2">
             <Label htmlFor="catBreed">Breed</Label>
-            <Input 
-              id="catBreed" 
-              placeholder="Persian, Tabby, etc." 
-              {...register("catBreed")} 
+            <Input
+              id="catBreed"
+              placeholder="Persian, Tabby, etc."
+              {...register("catBreed")}
               className={errors.catBreed ? "border-red-500 focus-visible:ring-red-500" : ""}
             />
             {errors.catBreed && <p className="text-sm text-red-500">{errors.catBreed.message}</p>}
@@ -145,8 +160,8 @@ function BookingForm() {
         <div className="grid gap-6 md:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="service">Select Service</Label>
-            <Select 
-              id="service" 
+            <Select
+              id="service"
               {...register("service")}
               className={errors.service ? "border-red-500 focus-visible:ring-red-500" : ""}
             >
@@ -162,10 +177,10 @@ function BookingForm() {
           <div className="space-y-2">
             <Label htmlFor="date">Preferred Date</Label>
             <div className="relative">
-              <Input 
-                id="date" 
-                type="date" 
-                {...register("date")} 
+              <Input
+                id="date"
+                type="date"
+                {...register("date")}
                 className={errors.date ? "border-red-500 focus-visible:ring-red-500" : ""}
               />
             </div>
@@ -174,18 +189,18 @@ function BookingForm() {
         </div>
         <div className="space-y-2">
           <Label htmlFor="notes">Special Notes or Requirements</Label>
-          <Textarea 
-            id="notes" 
-            placeholder="Does your cat have any allergies, medical conditions, or behavioral quirks we should know about?" 
-            {...register("notes")} 
+          <Textarea
+            id="notes"
+            placeholder="Does your cat have any allergies, medical conditions, or behavioral quirks we should know about?"
+            {...register("notes")}
           />
         </div>
       </div>
 
-      <Button 
-        type="submit" 
-        size="lg" 
-        className="w-full rounded-full text-lg h-14" 
+      <Button
+        type="submit"
+        size="lg"
+        className="w-full rounded-full text-lg h-14"
         disabled={isSubmitting}
       >
         {isSubmitting ? (
@@ -210,14 +225,14 @@ export default function BookingPage() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="mx-auto max-w-3xl">
           <div className="mb-12 text-center">
-            <motion.h1 
+            <motion.h1
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               className="font-heading text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl"
             >
               Book a Grooming Session
             </motion.h1>
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
@@ -227,7 +242,7 @@ export default function BookingPage() {
             </motion.p>
           </div>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}

@@ -2,11 +2,9 @@
 
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card"
-import { CalendarHeart, CheckCircle2, Clock, MoreHorizontal } from "lucide-react"
-
 import { getBookings, updateBookingStatus, Booking } from "@/lib/data"
 
-export default function AdminDashboard() {
+export default function BookingsPage() {
   const [bookings, setBookings] = useState<Booking[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -28,57 +26,20 @@ export default function AdminDashboard() {
   const handleStatusChange = async (id: string, newStatus: string) => {
     try {
       await updateBookingStatus(id, newStatus);
-      await loadBookings(); // refresh the list
+      await loadBookings();
     } catch (error) {
       console.error("Failed to update status", error);
     }
   }
 
-  const todaysBookings = bookings.filter(b => b.date.toLowerCase().includes("today")).length;
-  const upcomingBookings = bookings.filter(b => b.status === "Upcoming" || b.status === "In Progress").length;
-  const completedBookings = bookings.filter(b => b.status === "Completed").length;
+  if (loading) return <div className="p-8 text-slate-500">Loading bookings...</div>
 
   return (
     <div className="space-y-8">
-      {/* Stats */}
-      <div className="grid gap-6 md:grid-cols-3">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-slate-500">Today&apos;s Bookings</CardTitle>
-            <CalendarHeart className="h-4 w-4 text-primary-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-slate-900">{todaysBookings}</div>
-            <p className="text-xs text-slate-500 mt-1">Based on current schedule</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-slate-500">Upcoming / Active</CardTitle>
-            <Clock className="h-4 w-4 text-accent-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-slate-900">{upcomingBookings}</div>
-            <p className="text-xs text-slate-500 mt-1">In the system queue</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-slate-500">Completed</CardTitle>
-            <CheckCircle2 className="h-4 w-4 text-blue-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-slate-900">{completedBookings}</div>
-            <p className="text-xs text-slate-500 mt-1">Total finished sessions</p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Bookings Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Upcoming Bookings</CardTitle>
-          <CardDescription>Manage your grooming schedule.</CardDescription>
+          <CardTitle>All Bookings</CardTitle>
+          <CardDescription>Comprehensive list of all appointments.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
@@ -86,10 +47,11 @@ export default function AdminDashboard() {
               <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase text-slate-500">
                 <tr>
                   <th className="px-6 py-4 font-medium">ID</th>
-                  <th className="px-6 py-4 font-medium">Customer</th>
+                  <th className="px-6 py-4 font-medium">Customer (Phone)</th>
                   <th className="px-6 py-4 font-medium">Cat</th>
                   <th className="px-6 py-4 font-medium">Service</th>
                   <th className="px-6 py-4 font-medium">Date & Time</th>
+                  <th className="px-6 py-4 font-medium">Notes</th>
                   <th className="px-6 py-4 font-medium">Status</th>
                   <th className="px-6 py-4 font-medium text-right">Actions</th>
                 </tr>
@@ -98,17 +60,23 @@ export default function AdminDashboard() {
                 {bookings.map((booking) => (
                   <tr key={booking.id} className="hover:bg-slate-50 transition-colors">
                     <td className="px-6 py-4 font-medium text-slate-900">{booking.id}</td>
-                    <td className="px-6 py-4">{booking.ownerName}</td>
+                    <td className="px-6 py-4">
+                      <div className="font-medium text-slate-900">{booking.ownerName}</div>
+                      <div className="text-xs text-slate-500">{booking.phone}</div>
+                    </td>
                     <td className="px-6 py-4">
                       <div className="font-medium text-slate-900">{booking.catName}</div>
                       <div className="text-xs text-slate-500">{booking.catBreed}</div>
                     </td>
                     <td className="px-6 py-4">{booking.serviceName}</td>
                     <td className="px-6 py-4">{booking.date}</td>
+                    <td className="px-6 py-4 text-xs max-w-[150px] truncate" title={booking.notes}>{booking.notes || "-"}</td>
                     <td className="px-6 py-4">
                       <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${booking.status === 'In Progress'
                         ? 'bg-blue-100 text-blue-700'
-                        : 'bg-accent-100 text-accent-700'
+                        : booking.status === 'Completed' ? 'bg-green-100 text-green-700'
+                          : booking.status === 'Cancelled' ? 'bg-red-100 text-red-700'
+                            : 'bg-accent-100 text-accent-700'
                         }`}>
                         {booking.status}
                       </span>
@@ -123,12 +91,6 @@ export default function AdminDashboard() {
                         )}
                         {(booking.status === 'Upcoming' || booking.status === 'In Progress') && (
                           <button onClick={() => handleStatusChange(booking.id, 'Cancelled')} className="text-red-600 hover:text-red-800 hover:bg-red-50 text-xs font-semibold px-3 py-1.5 rounded-full transition-colors border border-transparent hover:border-red-200">Cancel</button>
-                        )}
-                        {booking.status === 'Completed' && (
-                          <span className="text-slate-400 text-xs font-medium px-2 py-1.5">Done</span>
-                        )}
-                        {booking.status === 'Cancelled' && (
-                          <span className="text-slate-400 text-xs font-medium px-2 py-1.5">Void</span>
                         )}
                       </div>
                     </td>

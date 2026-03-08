@@ -2,42 +2,48 @@
 
 import Image from "next/image"
 import { motion } from "motion/react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { getGalleryImages, GalleryImage } from "@/lib/data"
 
 const categories = ["All", "Before & After", "Spa Day", "Fluffy Clients"]
 
-const galleryImages = [
-  { id: 1, src: "https://picsum.photos/seed/catgallery1/800/800", category: "Spa Day", alt: "Cat enjoying a bath" },
-  { id: 2, src: "https://picsum.photos/seed/catgallery2/800/1000", category: "Before & After", alt: "Fluffy cat before grooming" },
-  { id: 3, src: "https://picsum.photos/seed/catgallery3/1000/800", category: "Fluffy Clients", alt: "Persian cat looking majestic" },
-  { id: 4, src: "https://picsum.photos/seed/catgallery4/800/800", category: "Spa Day", alt: "Cat getting nails trimmed" },
-  { id: 5, src: "https://picsum.photos/seed/catgallery5/800/1200", category: "Before & After", alt: "Sleek cat after grooming" },
-  { id: 6, src: "https://picsum.photos/seed/catgallery6/1200/800", category: "Fluffy Clients", alt: "Maine Coon cat posing" },
-  { id: 7, src: "https://picsum.photos/seed/catgallery7/800/800", category: "Spa Day", alt: "Cat being blow dried" },
-  { id: 8, src: "https://picsum.photos/seed/catgallery8/800/1000", category: "Before & After", alt: "Matted cat before treatment" },
-  { id: 9, src: "https://picsum.photos/seed/catgallery9/1000/800", category: "Fluffy Clients", alt: "Ragdoll cat looking cute" },
-]
-
 export default function GalleryPage() {
   const [activeCategory, setActiveCategory] = useState("All")
+  const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const filteredImages = activeCategory === "All" 
-    ? galleryImages 
+  useEffect(() => {
+    async function loadGallery() {
+      try {
+        const data = await getGalleryImages()
+        setGalleryImages(data || [])
+      } catch (error) {
+        console.error("Failed to load gallery:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadGallery()
+  }, [])
+
+  const filteredImages = activeCategory === "All"
+    ? galleryImages
     : galleryImages.filter(img => img.category === activeCategory)
+
 
   return (
     <div className="bg-white min-h-screen">
       {/* Header */}
       <section className="bg-primary-50 py-20">
         <div className="container mx-auto px-4 text-center md:px-6">
-          <motion.h1 
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="font-heading text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl md:text-6xl"
           >
             Our Happy Clients
           </motion.h1>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
@@ -57,11 +63,10 @@ export default function GalleryPage() {
               <button
                 key={category}
                 onClick={() => setActiveCategory(category)}
-                className={`rounded-full px-6 py-2 text-sm font-medium transition-all ${
-                  activeCategory === category
+                className={`rounded-full px-6 py-2 text-sm font-medium transition-all ${activeCategory === category
                     ? "bg-primary-500 text-white shadow-md"
                     : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                }`}
+                  }`}
               >
                 {category}
               </button>
@@ -69,7 +74,7 @@ export default function GalleryPage() {
           </div>
 
           {/* Masonry-ish Grid */}
-          <motion.div 
+          <motion.div
             layout
             className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
           >

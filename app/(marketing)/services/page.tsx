@@ -1,70 +1,46 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { motion } from "motion/react"
 import { Button } from "@/components/ui/Button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card"
-import { CheckCircle2, Scissors, Droplets, Bug, Sparkles, Heart } from "lucide-react"
+import * as Icons from "lucide-react"
 
-const services = [
-  {
-    title: "Basic Grooming",
-    description: "Essential care to keep your cat clean and comfortable.",
-    price: "$45",
-    icon: Droplets,
-    features: ["Bath with premium shampoo", "Nail trimming", "Ear cleaning", "Gentle brushing", "Eye cleaning"],
-    color: "bg-blue-100 text-blue-600",
-  },
-  {
-    title: "Full Spa Treatment",
-    description: "The ultimate pampering session for your feline friend.",
-    price: "$85",
-    icon: Scissors,
-    features: ["Everything in Basic", "De-shedding treatment", "Deep conditioning", "Blow dry & fur styling", "Paw pad trim"],
-    color: "bg-primary-100 text-primary-600",
-    popular: true,
-  },
-  {
-    title: "Anti-Flea Treatment",
-    description: "Safe and effective flea removal and prevention.",
-    price: "$60",
-    icon: Bug,
-    features: ["Flea bath", "Tick removal", "Soothing skin treatment", "Preventative application", "Home care advice"],
-    color: "bg-accent-100 text-accent-600",
-  },
-  {
-    title: "Kitten First Groom",
-    description: "A gentle introduction to grooming for kittens under 6 months.",
-    price: "$35",
-    icon: Heart,
-    features: ["Gentle water introduction", "Soft brushing", "Nail tipping", "Lots of treats & play", "Owner education"],
-    color: "bg-pink-100 text-pink-600",
-  },
-  {
-    title: "Senior Cat Care",
-    description: "Specialized, low-stress grooming for older cats.",
-    price: "$75",
-    icon: Sparkles,
-    features: ["Waterless bath option", "Sanitary trim", "Mat removal", "Extra gentle handling", "Joint-friendly setup"],
-    color: "bg-purple-100 text-purple-600",
-  },
-]
+import { getServices, Service } from "@/lib/data"
 
 export default function ServicesPage() {
+  const [services, setServices] = useState<Service[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function loadServices() {
+      try {
+        const data = await getServices()
+        setServices(data || [])
+      } catch (error) {
+        console.error("Failed to load services:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadServices()
+  }, [])
+
   return (
     <div className="bg-white">
       {/* Header */}
       <section className="bg-primary-50 py-20">
         <div className="container mx-auto px-4 text-center md:px-6">
-          <motion.h1 
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="font-heading text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl md:text-6xl"
           >
             Our Grooming Services
           </motion.h1>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
@@ -95,7 +71,13 @@ export default function ServicesPage() {
                   )}
                   <CardHeader>
                     <div className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl ${service.color}`}>
-                      <service.icon className="h-6 w-6" />
+                      {/* @ts-ignore */}
+                      {Icons[service.icon] ? (
+                        /* @ts-ignore */
+                        (() => { const IconTag = Icons[service.icon]; return <IconTag className="h-6 w-6" /> })()
+                      ) : (
+                        <Icons.Droplets className="h-6 w-6" />
+                      )}
                     </div>
                     <CardTitle className="text-2xl">{service.title}</CardTitle>
                     <CardDescription className="text-base">{service.description}</CardDescription>
@@ -105,12 +87,18 @@ export default function ServicesPage() {
                       <span className="text-4xl font-bold text-slate-900">{service.price}</span>
                     </div>
                     <ul className="space-y-3">
-                      {service.features.map((feature) => (
-                        <li key={feature} className="flex items-start gap-3">
-                          <CheckCircle2 className="h-5 w-5 shrink-0 text-accent-500" />
-                          <span className="text-slate-600">{feature}</span>
-                        </li>
-                      ))}
+                      {typeof service.features === 'string'
+                        ? JSON.parse(service.features).map((feature: string) => (
+                          <li key={feature} className="flex items-start gap-3">
+                            <Icons.CheckCircle2 className="h-5 w-5 shrink-0 text-accent-500" />
+                            <span className="text-slate-600">{feature}</span>
+                          </li>
+                        )) : service.features.map((feature: string) => (
+                          <li key={feature} className="flex items-start gap-3">
+                            <Icons.CheckCircle2 className="h-5 w-5 shrink-0 text-accent-500" />
+                            <span className="text-slate-600">{feature}</span>
+                          </li>
+                        ))}
                     </ul>
                   </CardContent>
                   <CardFooter>
@@ -136,7 +124,7 @@ export default function ServicesPage() {
             </h2>
             <p className="mt-4 text-lg text-slate-600">Customize your cat&apos;s spa day with these extras.</p>
           </div>
-          
+
           <div className="mx-auto max-w-3xl overflow-hidden rounded-3xl bg-white shadow-sm">
             <div className="divide-y divide-slate-100">
               {[
@@ -156,7 +144,7 @@ export default function ServicesPage() {
             </div>
           </div>
         </div>
-      </section>
-    </div>
+      </section >
+    </div >
   )
 }
