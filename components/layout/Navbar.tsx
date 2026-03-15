@@ -4,7 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion } from "motion/react"
-import { Cat, Menu, X } from "lucide-react"
+import { Cat, LayoutDashboard, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/Button"
 import { cn } from "@/lib/utils"
 
@@ -36,7 +36,7 @@ export function Navbar() {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-6 lg:gap-8">
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -49,9 +49,18 @@ export function Navbar() {
               {link.name}
             </Link>
           ))}
-          <Button asChild className="rounded-full">
-            <Link href="/booking">Book Grooming</Link>
-          </Button>
+          
+          <div className="flex items-center gap-3">
+            <Button asChild variant="ghost" size="sm" className="hidden md:flex gap-2 text-slate-500 hover:text-primary-600 transition-colors">
+              <Link href="/admin">
+                <LayoutDashboard className="h-4 w-4" />
+                <span>Admin</span>
+              </Link>
+            </Button>
+            <Button asChild className="rounded-full">
+              <Link href="/booking">Book Grooming</Link>
+            </Button>
+          </div>
         </nav>
 
         {/* Mobile Toggle */}
@@ -84,7 +93,13 @@ export function Navbar() {
                 {link.name}
               </Link>
             ))}
-            <div className="pt-4">
+            <div className="pt-4 flex flex-col gap-3">
+              <Button asChild variant="outline" className="w-full rounded-full gap-2 text-slate-600 border-slate-200">
+                <Link href="/admin">
+                  <LayoutDashboard className="h-4 w-4" />
+                  Admin Dashboard
+                </Link>
+              </Button>
               <Button asChild className="w-full rounded-full">
                 <Link href="/booking">Book Grooming</Link>
               </Button>
