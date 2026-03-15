@@ -3,7 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { Cat, LayoutDashboard, Calendar, Users, Settings, LogOut } from "lucide-react"
+import { LayoutDashboard, Calendar, Users, Settings, LogOut } from "lucide-react"
 
 import { supabase } from "@/lib/supabase"
 import { AdminAuthWrapper } from "@/components/AdminAuthWrapper"
@@ -17,6 +17,7 @@ export default function AdminLayout({
   const router = useRouter()
 
   const handleLogout = async () => {
+    localStorage.removeItem("purrfect_spa_demo_access")
     await supabase.auth.signOut()
     router.push("/admin/login")
   }
@@ -32,9 +33,14 @@ export default function AdminLayout({
           {/* Sidebar */}
           <aside className="w-64 border-r border-slate-200 bg-white">
             <div className="flex h-20 items-center border-b border-slate-100 px-6">
-              <Link href="/" className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-100 text-primary-600">
-                  <Cat className="h-5 w-5" />
+              <Link href="/" className="flex items-center gap-3">
+                <div className="relative h-10 w-10 flex-shrink-0">
+                  <Image 
+                    src="/logo.png" 
+                    alt="PurrfectSpa Logo" 
+                    fill 
+                    className="object-contain"
+                  />
                 </div>
                 <span className="font-heading text-lg font-bold tracking-tight text-slate-900">
                   PurrfectSpa

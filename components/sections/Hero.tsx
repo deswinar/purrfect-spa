@@ -29,7 +29,7 @@ export function Hero() {
                 Book professional grooming treatments designed exclusively for your feline companion. Stress-free, gentle, and purrfect.
               </p>
             </div>
-            
+
             <div className="flex flex-col gap-4 sm:flex-row">
               <Button size="lg" asChild className="rounded-full text-lg">
                 <Link href="/booking">Book Grooming</Link>
@@ -38,7 +38,7 @@ export function Hero() {
                 <Link href="/services">View Services</Link>
               </Button>
             </div>
-            
+
             <div className="flex items-center gap-6 pt-4 text-sm font-medium text-slate-500">
               <div className="flex items-center gap-2">
                 <Heart className="h-5 w-5 text-red-400 fill-red-400" />
@@ -50,7 +50,7 @@ export function Hero() {
               </div>
             </div>
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -61,17 +61,17 @@ export function Hero() {
               <div className="absolute inset-0 rounded-full border-2 border-dashed border-primary-300 animate-[spin_20s_linear_infinite]" />
               <div className="relative h-full w-full overflow-hidden rounded-full border-8 border-white shadow-xl">
                 <Image
-                  src="https://picsum.photos/seed/catgrooming/800/800"
-                  alt="Cute cat being groomed"
+                  src="https://images.unsplash.com/photo-1573865526739-10659fec78a5?auto=format&fit=crop&q=80&w=800"
+                  alt="Cute cat being groomed with a brush"
                   fill
                   className="object-cover"
                   referrerPolicy="no-referrer"
                   priority
                 />
               </div>
-              
+
               {/* Floating badges */}
-              <motion.div 
+              <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
                 className="absolute -right-4 top-1/4 rounded-2xl bg-white p-4 shadow-lg"

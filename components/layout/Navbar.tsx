@@ -4,7 +4,8 @@ import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion } from "motion/react"
-import { Cat, LayoutDashboard, Menu, X } from "lucide-react"
+import { LayoutDashboard, Menu, X } from "lucide-react"
+import Image from "next/image"
 import { Button } from "@/components/ui/Button"
 import { cn } from "@/lib/utils"
 
@@ -26,9 +27,15 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-200/50 bg-white/80 backdrop-blur-md">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
-        <Link href="/" className="flex items-center gap-2 transition-transform hover:scale-105">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-100 text-primary-600">
-            <Cat className="h-6 w-6" />
+        <Link href="/" className="flex items-center gap-3 transition-transform hover:scale-105">
+          <div className="relative h-12 w-12 flex-shrink-0">
+            <Image 
+              src="/logo.png" 
+              alt="PurrfectSpa Logo" 
+              fill 
+              className="object-contain"
+              priority
+            />
           </div>
           <span className="font-heading text-xl font-bold tracking-tight text-slate-900">
             PurrfectSpa

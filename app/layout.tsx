@@ -15,6 +15,10 @@ const quicksand = Quicksand({
 export const metadata: Metadata = {
   title: 'PurrfectSpa | Premium Cat Grooming & Wellness',
   description: 'Book professional grooming treatments designed for your feline companion.',
+  icons: {
+    icon: '/logo.png',
+    apple: '/logo.png',
+  },
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {

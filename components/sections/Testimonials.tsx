@@ -9,19 +9,19 @@ const testimonials = [
     quote: "My Persian cat has never looked this fluffy! The de-shedding treatment is a miracle. Highly recommend PurrfectSpa.",
     author: "Sarah L.",
     role: "Cat Mom to Luna",
-    avatar: "https://picsum.photos/seed/sarah/100/100",
+    avatar: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&q=80&w=200",
   },
   {
     quote: "PurrfectSpa is the best grooming service ever! My usually anxious tabby was so relaxed when I picked him up.",
     author: "Daniel T.",
     role: "Cat Dad to Oliver",
-    avatar: "https://picsum.photos/seed/daniel/100/100",
+    avatar: "https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&q=80&w=200",
   },
   {
     quote: "The staff here truly understands cats. They handled my senior cat with such care and gentleness.",
     author: "Emily R.",
     role: "Cat Mom to Bella",
-    avatar: "https://picsum.photos/seed/emily/100/100",
+    avatar: "https://images.unsplash.com/photo-1592194996308-7b43878e84a6?auto=format&fit=crop&q=80&w=200",
   },
 ]
 

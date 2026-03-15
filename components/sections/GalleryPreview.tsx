@@ -6,12 +6,12 @@ import { motion } from "motion/react"
 import { Button } from "@/components/ui/Button"
 
 const images = [
-  "https://picsum.photos/seed/cat1/600/600",
-  "https://picsum.photos/seed/cat2/600/600",
-  "https://picsum.photos/seed/cat3/600/600",
-  "https://picsum.photos/seed/cat4/600/600",
-  "https://picsum.photos/seed/cat5/600/600",
-  "https://picsum.photos/seed/cat6/600/600",
+  "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&q=80&w=800",
+  "https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&q=80&w=800",
+  "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?auto=format&fit=crop&q=80&w=800",
+  "https://images.unsplash.com/photo-1513245543132-31f507417b26?auto=format&fit=crop&q=80&w=800",
+  "https://images.unsplash.com/photo-1592194996308-7b43878e84a6?auto=format&fit=crop&q=80&w=800",
+  "https://images.unsplash.com/photo-1573865526739-10659fec78a5?auto=format&fit=crop&q=80&w=800",
 ]
 
 export function GalleryPreview() {

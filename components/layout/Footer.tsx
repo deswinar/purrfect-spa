@@ -1,5 +1,6 @@
 import Link from "next/link"
-import { Cat, Facebook, Instagram, Twitter } from "lucide-react"
+import Image from "next/image"
+import { Facebook, Instagram, Twitter } from "lucide-react"
 
 export function Footer() {
   return (
@@ -7,9 +8,14 @@ export function Footer() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid gap-8 md:grid-cols-4">
           <div className="md:col-span-2">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-100 text-primary-600">
-                <Cat className="h-5 w-5" />
+            <Link href="/" className="flex items-center gap-3 mb-4">
+              <div className="relative h-10 w-10 flex-shrink-0">
+                <Image 
+                  src="/logo.png" 
+                  alt="PurrfectSpa Logo" 
+                  fill 
+                  className="object-contain"
+                />
               </div>
               <span className="font-heading text-lg font-bold tracking-tight text-slate-900">
                 PurrfectSpa

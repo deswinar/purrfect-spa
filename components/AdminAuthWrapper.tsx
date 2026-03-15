@@ -13,13 +13,14 @@ export function AdminAuthWrapper({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession()
+      const isDemoAccess = typeof window !== 'undefined' && localStorage.getItem("purrfect_spa_demo_access") === "true"
 
-      if (!session && pathname !== "/admin/login") {
+      if (!session && !isDemoAccess && pathname !== "/admin/login") {
         router.push("/admin/login")
-      } else if (session && pathname === "/admin/login") {
+      } else if ((session || isDemoAccess) && pathname === "/admin/login") {
         router.push("/admin")
       } else {
-        setIsAuthenticated(!!session)
+        setIsAuthenticated(!!session || isDemoAccess)
         setIsLoading(false)
       }
     }
@@ -27,12 +28,14 @@ export function AdminAuthWrapper({ children }: { children: React.ReactNode }) {
     checkAuth()
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_OUT" && pathname !== "/admin/login") {
+      const isDemoAccess = typeof window !== 'undefined' && localStorage.getItem("purrfect_spa_demo_access") === "true"
+
+      if (event === "SIGNED_OUT" && !isDemoAccess && pathname !== "/admin/login") {
         router.push("/admin/login")
-      } else if (event === "SIGNED_IN" && pathname === "/admin/login") {
+      } else if ((event === "SIGNED_IN" || isDemoAccess) && pathname === "/admin/login") {
         router.push("/admin")
       } else {
-        setIsAuthenticated(!!session)
+        setIsAuthenticated(!!session || isDemoAccess)
         setIsLoading(false)
       }
     })

@@ -40,8 +40,8 @@ export function WhyChoose() {
             className="relative h-[500px] w-full overflow-hidden rounded-3xl"
           >
             <Image
-              src="https://picsum.photos/seed/catspa/800/1000"
-              alt="Relaxed cat in a spa"
+              src="https://images.unsplash.com/photo-1573865526739-10659fec78a5?auto=format&fit=crop&q=80&w=800"
+              alt="Relaxed cat sleeping peacefully"
               fill
               className="object-cover"
               referrerPolicy="no-referrer"

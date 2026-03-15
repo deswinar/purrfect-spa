@@ -20,15 +20,15 @@ VALUES
 -- Insert Gallery Images
 INSERT INTO public.gallery_images (src, category, alt)
 VALUES
-    ('https://picsum.photos/seed/catgallery1/800/800', 'Spa Day', 'Cat enjoying a bath'),
-    ('https://picsum.photos/seed/catgallery2/800/1000', 'Before & After', 'Fluffy cat before grooming'),
-    ('https://picsum.photos/seed/catgallery3/1000/800', 'Fluffy Clients', 'Persian cat looking majestic'),
-    ('https://picsum.photos/seed/catgallery4/800/800', 'Spa Day', 'Cat getting nails trimmed'),
-    ('https://picsum.photos/seed/catgallery5/800/1200', 'Before & After', 'Sleek cat after grooming'),
-    ('https://picsum.photos/seed/catgallery6/1200/800', 'Fluffy Clients', 'Maine Coon cat posing'),
-    ('https://picsum.photos/seed/catgallery7/800/800', 'Spa Day', 'Cat being blow dried'),
-    ('https://picsum.photos/seed/catgallery8/800/1000', 'Before & After', 'Matted cat before treatment'),
-    ('https://picsum.photos/seed/catgallery9/1000/800', 'Fluffy Clients', 'Ragdoll cat looking cute');
+    ('https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&q=80&w=800', 'Spa Day', 'Calm cat in a soft towel after grooming'),
+    ('https://images.unsplash.com/photo-1548546738-8502ce9a3d06?auto=format&fit=crop&q=80&w=800', 'Before & After', 'Professional brushing session for maximum fluff'),
+    ('https://images.unsplash.com/photo-1592194996308-7b43878e84a6?auto=format&fit=crop&q=80&w=800', 'Fluffy Clients', 'Majestic long-haired cat showing off its coat'),
+    ('https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&q=80&w=800', 'Spa Day', 'Gentle pampering and relaxation for kittens'),
+    ('https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&q=80&w=800', 'Before & After', 'Transformation of a well-groomed domestic cat'),
+    ('https://images.unsplash.com/photo-1513245543132-31f507417b26?auto=format&fit=crop&q=80&w=800', 'Fluffy Clients', 'Sweet kitten feeling fresh and clean'),
+    ('https://images.unsplash.com/photo-1573865526739-10659fec78a5?auto=format&fit=crop&q=80&w=800', 'Spa Day', 'Peaceful nap after a full spa treatment'),
+    ('https://images.unsplash.com/photo-1543852786-1cf6624b9987?auto=format&fit=crop&q=80&w=800', 'Before & After', 'Self-grooming cat with a perfectly maintained coat'),
+    ('https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?auto=format&fit=crop&q=80&w=800', 'Fluffy Clients', 'Aesthetic portrait of a happy groomed client');
 
 
 -- Insert initial mock bookings

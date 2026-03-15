@@ -15,6 +15,7 @@ export default function AdminLogin() {
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const router = useRouter()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -94,6 +95,41 @@ export default function AdminLogin() {
                 "Sign In"
               )}
             </Button>
+
+            <div className="relative py-4">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-slate-200"></span>
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-white px-2 text-slate-500">Developer Demo</span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <Button
+                type="button"
+                variant="outline"
+                className="rounded-full border-primary-100 text-primary-600 hover:bg-primary-50"
+                onClick={() => {
+                  setEmail("admin@purrfectspa.com")
+                  setPassword("Test123")
+                }}
+              >
+                Fill Demo
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                className="rounded-full border-accent-100 text-accent-600 hover:bg-accent-50"
+                onClick={() => {
+                  localStorage.setItem("purrfect_spa_demo_access", "true")
+                  window.dispatchEvent(new Event("storage"))
+                  router.push("/admin")
+                }}
+              >
+                Bypass Login
+              </Button>
+            </div>
           </form>
         </div>
       </motion.div>
